@@ -3,7 +3,7 @@ This is a little shell script for automated installations of the official signal
 # This tool:
 💫 installs *nala* for a pretty output  
 🔑 Fetches and installs the official Signal GPG signing key and repository  
-🛠️ Handles necceassry dependencies of *ALSA* or *PipeWire* libraries (I needed to this because it wouldn't launch in my distrobox container)  
+🛠️ Handles necessary dependencies of *ALSA* or *PipeWire* libraries (I needed to do this because it wouldn't launch in my distrobox container)  
 🌈 Colorized, emoji-enhanced status messages  
 
 # Usage  
