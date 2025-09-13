@@ -16,27 +16,33 @@ if ! command -v nala &>/dev/null; then
   # apt fallback
   sudo apt update -y
   sudo apt install -y nala
-  echo -e "${GREEN_CHECK}Nala installed succesfully${NC}"
+  echo -e "${GREEN_CHECK}Nala installed successfully${NC}"
 else
   echo -e "${GREEN_CHECK}Nala is installed${NC}"
 fi
 
-# 2. Install our official public software signing key:
+# 2. Install Signal's official public software signing key:
 echo -e "${LOADING}Installing official signing key...${NC}"
 wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg;
 cat signal-desktop-keyring.gpg | sudo tee /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
 echo -e "${GREEN_CHECK}Done!${NC}"
 
-# 3. Add our repository to your list of repositories:
+# 3. Add Signal repository to list of repositories:
 echo -e "${LOADING}Adding repository...${NC}"
-echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
-  sudo tee /etc/apt/sources.list.d/signal-xenial.list
+# Detect Ubuntu codename or fallback to xenial if not found
+UBUNTU_CODENAME=$(lsb_release -cs 2>/dev/null || echo "xenial")
+echo "Detected Ubuntu codename: $UBUNTU_CODENAME"
+echo "If this is incorrect, please edit the script and set the correct codename for your distribution."
+
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt $UBUNTU_CODENAME main" |\
+  sudo tee /etc/apt/sources.list.d/signal-desktop.list
 echo -e "${GREEN_CHECK}Done!${NC}"
 
 # 4. Update your package database and install Signal:
 echo -e "${LOADING}Updating packages and installing Signal... ${NC}"
-sudo nala update && sudo nala install signal-desktop pipewire-audio-client-libraries -y
-
+echo -e "${LOADING}Now starting Signal... ${NC}"
+nohup signal-desktop > "$HOME/signal-desktop.log" 2>&1 &
+echo -e "${INFO}Signal Desktop is starting in the background. Logs can be found at $HOME/signal-desktop.log${NC}"
 echo -e "${GREEN_CHECK}Done!${NC}"
 
 # 5. Start Signal
