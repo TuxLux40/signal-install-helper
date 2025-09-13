@@ -1,4 +1,4 @@
-This is a little shell script for automated installations of the official signal linux client für debian based systems. It streamlines the installation and launch of Signal Desktop.
+This is a little shell script for automated installations of the official signal linux client for debian based systems. It streamlines the installation and launch of Signal Desktop.
 
 # This tool:
 💫 installs *nala* for a pretty output  
